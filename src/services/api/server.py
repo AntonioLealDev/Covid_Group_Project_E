@@ -2,11 +2,22 @@ from flask import Flask, request, render_template
 import os
 import json
 
+def def_camino(file_name):
+    """
+        @Alex
+        Path definition for data folder to operate the path
+            Input   : Name of the file to create the path
+    """
+    fileDir = os.path.dirname(os.path.realpath('__file__'))
+    camino = os.path.join(fileDir, './Covid_Group_Project_E/data/'+file_name)
+    camino = os.path.abspath(os.path.realpath(camino))
+    
+    return camino
+
 def read_json(fullpath):
     with open(fullpath, "r") as json_file_readed:
         json_readed = json.load(json_file_readed)
     return json_readed
-
 
 # Mandatory
 app = Flask(__name__)  # __name__ --> __main__  
@@ -28,8 +39,11 @@ def group_id():
 @app.route('/token_id', methods=['GET']) #This one is the is to get the password, so we need to put here
 def token_id():
     x = request.args['password'] #el password es N
+    path = def_camino("json_own.json")
+    print(path)
+    json_own = read_json(path)
     if x == "E107750842":
-        return {"t_d_averages":[1,2,3,4,5,6,7,8,9,10]} #El contenido es "S"
+        return json_own #El contenido es "S"
     else:
         return "No es el identificador correcto"
 
