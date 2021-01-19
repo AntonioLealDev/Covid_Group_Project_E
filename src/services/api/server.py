@@ -7,29 +7,29 @@ def read_json(fullpath):
         json_readed = json.load(json_file_readed)
     return json_readed
 
+
 # Mandatory
 app = Flask(__name__)  # __name__ --> __main__  
 
 # ---------- Flask functions ----------
-@app.route("/")  
+@app.route("/")  # @ --> esto representa el decorador de la función
 def home():
     """ Default path """
-    return app.send_static_file('greet.html')
+    return "Welcome to Group E server"
 
-@app.route("/greet")
-def greet():
-    username = request.args.get('name')
-    return render_template('index.html', name=username)
+@app.route('/group_id', methods=['GET']) #This one is the is to get the password
+def group_id():
+    x = request.args['password'] #el password es N
+    if x == "E80":
+        return '{"token":"E107750842"}' #El contenido es "S"
+    else:
+        return "No es el identificador correcto"
 
-@app.route("/c_json")
-def create_json():
-    return '{"clave":"valor", "clave_2":3}'
-
-@app.route('/give_me_id', methods=['GET'])
-def give_id():
-    x = request.args['toke']
-    if x == "12345":
-        return request.args
+@app.route('/token_id', methods=['GET']) #This one is the is to get the password, so we need to put here
+def token_id():
+    x = request.args['password'] #el password es N
+    if x == "E107750842":
+        return {"t_d_averages":[1,2,3,4,5,6,7,8,9,10]} #El contenido es "S"
     else:
         return "No es el identificador correcto"
 
@@ -37,7 +37,11 @@ def give_id():
 
 def main():
     print("---------STARTING PROCESS---------")
+    print(__file__)
     
+    # Get the settings fullpath
+    # \\ --> WINDOWS
+    # / --> UNIX
     settings_file = os.path.dirname(__file__) + os.sep + "settings.json"
     print(settings_file)
     # Load json from file
