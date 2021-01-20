@@ -10,6 +10,8 @@ import numpy as np
 
 class Miner:
 
+    
+
     def chosen_countries(self, old_df, location_column, country_1, country_2, country_3, country_4, country_5):
         """ It divides the original df in others where the 'location' column is specific for the country given,
         then, it concatenates them into a single df
@@ -177,6 +179,7 @@ class Miner:
         """ Function that return the position of the country in the world in terms of the variable
             Args: dataset you are working with, country you want to know, variable to check and h
             (number of countries in your dataset)
+            Creator: @JavierOlcoz
         """
         x1 = dataset.groupby('location')[variable].aggregate([max])
         x1 = x1.sort_values(['max'], ascending=False)
@@ -187,3 +190,48 @@ class Miner:
         total = total.set_index(['location'])
 
         return total
+
+
+    def total_infected(self, dataset1):
+        """ Concatenates all the dataframes
+            Args: dataset used
+            Creator: @JavierOlcoz
+        """
+        poland_total_cases = self.country_position(dataset=dataset1, country='Poland',variable='total_cases',h=192)
+        south_africa_total_cases = self.country_position(dataset=dataset1,country='South Africa',variable='total_cases',h=192)
+        indonesia_total_cases = self.country_position(dataset=dataset1,country='Indonesia',variable='total_cases',h=192)
+        ukraine_total_cases = self.country_position(dataset=dataset1,country='Ukraine',variable='total_cases',h=192)
+        spain_total_cases = self.country_position(dataset=dataset1,country='Spain',variable='total_cases',h=192)
+        our_countries_total_cases = pd.concat([poland_total_cases, south_africa_total_cases, indonesia_total_cases, ukraine_total_cases, spain_total_cases])
+
+        return our_countries_total_cases  
+
+
+    def total_deaths(self, dataset1):
+        """ Concatenates all the dataframes
+            Args: dataset used
+            Creator: @JavierOlcoz
+        """
+        poland_total_deaths = self.country_position(dataset=dataset1,country='Poland',variable='total_deaths',h=192)
+        south_africa_total_deaths = self.country_position(dataset=dataset1,country='South Africa',variable='total_deaths',h=192)
+        indonesia_total_deaths = self.country_position(dataset=dataset1,country='Indonesia',variable='total_deaths',h=192)
+        ukraine_total_deaths = self.country_position(dataset=dataset1,country='Ukraine',variable='total_deaths',h=192)
+        spain_total_deaths = self.country_position(dataset=dataset1,country='Spain',variable='total_deaths',h=192)
+        our_countries_total_deaths = pd.concat([poland_total_deaths, south_africa_total_deaths, indonesia_total_deaths, ukraine_total_deaths, spain_total_deaths])
+
+        return our_countries_total_deaths
+
+
+    def life_expectancy(self, dataset1): 
+        """ Concatenates all the dataframes
+            Args: dataset used
+            Creator: @JavierOlcoz
+        """   
+        poland_life_expectancy = self.country_position(dataset=dataset1,country='Poland',variable='life_expectancy',h=192)
+        south_africa_life_expectancy = self.country_position(dataset=dataset1,country='South Africa',variable='life_expectancy',h=192)
+        indonesia_life_expectancy = self.country_position(dataset=dataset1,country='Indonesia',variable='life_expectancy',h=192)
+        ukraine_life_expectancy = self.country_position(dataset=dataset1,country='Ukraine',variable='life_expectancy',h=192)
+        spain_life_expectancy = self.country_position(dataset=dataset1,country='Spain',variable='life_expectancy',h=192)
+        our_countries_life_expectancy = pd.concat([poland_life_expectancy, south_africa_life_expectancy, indonesia_life_expectancy, ukraine_life_expectancy, spain_life_expectancy])
+
+        return our_countries_life_expectancy
