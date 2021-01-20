@@ -67,7 +67,7 @@ class Visualization:
         sns.heatmap(matrix, cmap="BrBG", annot=True)
         return plt.show()
 
-    def plot_tendency(x, y_series, x_label, y_label, set_labels, label_rotation, title, date, path, vlines, vline_colors = ["r"], vline = False, legend = True):
+    def plot_tendency(self, x, y_series, x_label, y_label, set_labels, label_rotation, title, date, path, vlines, vline_colors = ["r"], vline = False, legend = True):
         """ Make a lineplot of one or several series. Vertical lines can be added.
             Saves the plot to file. Made by @AntonioLealDev
 
@@ -109,7 +109,7 @@ class Visualization:
         # Save plot to file
         plot.savefig(path, dpi=plot.dpi)
 
-    def make_barplot(data, x, y, x_label, y_label, title):
+    def make_barplot(self, data, x, y, x_label, y_label, title):
         """ Makes plotly barplot and saves it.
 
             Creator: @AntonioLealDev
@@ -133,7 +133,7 @@ class Visualization:
         fig.update_layout(title={"y":0.92})
         fig.show()
 
-    def make_lineplot(data, x, y, x_label, y_label, title):
+    def make_lineplot(self, data, x, y, x_label, y_label, title):
         """ Makes plotly lineplot and saves it.
 
             Creator: @AntonioLealDev
@@ -157,7 +157,7 @@ class Visualization:
         fig.update_layout(title={"y":0.92})
         fig.show()
 
-    def make_scatter(data, x, y, x_label, y_label, title):
+    def make_scatter(self, data, x, y, x_label, y_label, title):
         """ Makes plotly scatter plot and saves it to html
 
             Creator: @AntonioLealDev
@@ -182,7 +182,7 @@ class Visualization:
         fig.update_traces(marker=dict(size=4))
         fig.show()
 
-    def make_pies(data, p1_label, p2_label, p1_values, p2_values, colors, p1_title, p2_title):
+    def make_pies(self, data, p1_label, p2_label, p1_values, p2_values, colors, p1_title, p2_title):
         """ Make double pie plot. Saves it to html
 
             Creator: @AntonioLealDev
