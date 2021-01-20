@@ -10,8 +10,6 @@ import numpy as np
 
 class Miner:
 
-    
-
     def chosen_countries(self, old_df, location_column, country_1, country_2, country_3, country_4, country_5):
         """ It divides the original df in others where the 'location' column is specific for the country given,
         then, it concatenates them into a single df
