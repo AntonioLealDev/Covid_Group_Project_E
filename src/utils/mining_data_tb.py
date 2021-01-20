@@ -1,6 +1,6 @@
 # mining_data_tb.py 
 # Creator: Javier Olcoz
-# Last review: 19/01/2021 by Javier Olcoz
+# Last review: 20/01/2021 by Javier Olcoz
 
 
 import pandas as pd
@@ -142,10 +142,13 @@ class Miner:
         most_correlation_x = []
         keys_list_x = []
 
-        # Assign the dataset to a variable, drop the columns with all the values equal to Nan and obtain the correlation matrix
+        # Assign the dataset to a variable, drop the columns with all the values equal to Nan, 
+        # drop the columns with too many Nan results and obtain the correlation matrix 
 
         x = dataset
         x = x.dropna(axis=1, how='all')
+        thresh = len(x) * .15
+        x.dropna(thresh = thresh, axis = 1, inplace = True)
         x_correlation = x.corr()
 
         # Get the highest correlation from the previous matrix
@@ -155,7 +158,7 @@ class Miner:
         # Make a list of the correlations and the columns involved 
 
         for index, value in x_middle.items():
-            if h < value < 0.98 or -0.98 < value < -h:
+            if h < value < 0.989 or -0.989 < value < -h:
                 most_correlation_x.append(index)
 
 
@@ -170,3 +173,19 @@ class Miner:
         z = df_x_highest_correlation.corr()
 
         return z
+
+
+    def country_position(self, dataset, country, variable, h):
+        """ Function that return the position of the country in the world in terms of the variable
+            Args: dataset you are working with, country you want to know, variable to check and h
+            (number of countries in your dataset)
+        """
+        x1 = dataset.groupby('location')[variable].aggregate([max])
+        x1 = x1.sort_values(['max'], ascending=False)
+        x1['location'] = x1.index
+        x1.index = np.arange(h)
+        total = x1[x1['location'] == country]
+        total['Position'] = total.index
+        total = total.set_index(['location'])
+
+        return total
