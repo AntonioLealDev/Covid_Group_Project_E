@@ -2,7 +2,7 @@
 **/*.jpg
 
 # Countries Folder
-Countries/
+/Countries/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
