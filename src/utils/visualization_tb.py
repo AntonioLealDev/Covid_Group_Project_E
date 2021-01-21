@@ -67,7 +67,26 @@ class Visualization:
         sns.heatmap(matrix, cmap="BrBG", annot=True)
         return plt.show()
 
-    def plot_tendency(self, x, y_series, x_label, y_label, set_labels, label_rotation, title, date, path, vlines, vline_colors = ["r"], vline = False, legend = True):
+    def all_matrix_visualization(self, dataset1, dataset2, dataset3, dataset4, dataset5, dataset6, dataset7, dataset8, dataset9, dataset10):
+        """ Visualizes all the matrix in one command line
+            Args:
+            Creator: @JavierOlcoz
+        """
+        poland_matrix = self.correlation_matrix(matrix=dataset1, title_1='POLAND CORRELATION')
+        south_africa_matrix = self.correlation_matrix(matrix=dataset2, title_1='SOUTH AFRICA CORRELATION')
+        indonesia_matrix = self.correlation_matrix(matrix=dataset3, title_1='INDONESIA CORRELATION')
+        ukraine_matrix = self.correlation_matrix(matrix=dataset4, title_1='UKRAINE CORRELATION')
+        spain_matrix = self.correlation_matrix(matrix=dataset5, title_1='SPAIN CORRELATION')
+
+        top_poland_matrix = self.correlation_matrix(matrix=dataset6, title_1='POLAND TOP 10 CORRELATION')
+        top_south_africa_matrix = self.correlation_matrix(matrix=dataset7, title_1='SOUTH AFRICA TOP 10 CORRELATION')
+        top_indonesia_matrix = self.correlation_matrix(matrix=dataset8, title_1='INDONESIA TOP 10 CORRELATION')
+        top_ukraine_matrix = self.correlation_matrix(matrix=dataset9, title_1='UKRAINE TOP 10 CORRELATION')
+        top_spain_matrix = self.correlation_matrix(matrix=dataset10, title_1='SPAIN TOP 10 CORRELATION')
+
+        return poland_matrix, south_africa_matrix, indonesia_matrix, ukraine_matrix, spain_matrix, top_poland_matrix, top_south_africa_matrix, top_indonesia_matrix, top_ukraine_matrix, top_spain_matrix
+
+    def plot_tendency_1(self, x, y_series, x_label, y_label, set_labels, label_rotation, title, date, path, vlines, vline_colors = ["r"], vline = False, legend = True):
         """ Make a lineplot of one or several series. Vertical lines can be added.
             Saves the plot to file. Made by @AntonioLealDev
 

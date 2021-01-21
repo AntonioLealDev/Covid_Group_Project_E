@@ -174,6 +174,25 @@ class Miner:
 
         return z
 
+    def matrix_high_correlation(self,dataset1, dataset2, dataset3, dataset4, dataset5):
+        """ Return the correlation matrix of the 5 given countries
+            Args: dataset of each country
+            Creator: @JavierOlcoz
+        """
+        highest_poland_correlation = self.highest_correlation_columns_per_country(dataset=dataset1, h=0.90)
+        highest_south_africa_correlation = self.highest_correlation_columns_per_country(dataset=dataset2, h=0.90)
+        highest_indonesia_correlation = self.highest_correlation_columns_per_country(dataset=dataset3, h=0.90)
+        highest_ukraine_correlation = self.highest_correlation_columns_per_country(dataset=dataset4, h=0.90)
+        highest_spain_correlation = self.highest_correlation_columns_per_country(dataset=dataset5, h=0.90)
+
+        top_10_highest_poland_correlation = self.highest_correlation_columns_per_country(dataset=dataset1, h=0.88)
+        top_10_highest_south_africa_correlation = self.highest_correlation_columns_per_country(dataset=dataset2, h=0.90)
+        top_10_highest_indonesia_correlation = self.highest_correlation_columns_per_country(dataset=dataset3, h=0.54)
+        top_10_highest_ukraine_correlation = self.highest_correlation_columns_per_country(dataset=dataset4, h=0.82)
+        top_10_highest_spain_correlation = self.highest_correlation_columns_per_country(dataset=dataset5, h=0.68)
+
+        return highest_poland_correlation, highest_south_africa_correlation, highest_indonesia_correlation, highest_ukraine_correlation, highest_spain_correlation, top_10_highest_poland_correlation, top_10_highest_south_africa_correlation, top_10_highest_indonesia_correlation, top_10_highest_ukraine_correlation, top_10_highest_spain_correlation
+
 
     def country_position(self, dataset, country, variable, h):
         """ Function that return the position of the country in the world in terms of the variable
