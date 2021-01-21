@@ -185,7 +185,7 @@ class Miner:
         highest_ukraine_correlation = self.highest_correlation_columns_per_country(dataset=dataset4, h=0.90)
         highest_spain_correlation = self.highest_correlation_columns_per_country(dataset=dataset5, h=0.90)
 
-        top_10_highest_poland_correlation = self.highest_correlation_columns_per_country(dataset=dataset1, h=0.88)
+        top_10_highest_poland_correlation = self.highest_correlation_columns_per_country(dataset=dataset1, h=0.877)
         top_10_highest_south_africa_correlation = self.highest_correlation_columns_per_country(dataset=dataset2, h=0.90)
         top_10_highest_indonesia_correlation = self.highest_correlation_columns_per_country(dataset=dataset3, h=0.54)
         top_10_highest_ukraine_correlation = self.highest_correlation_columns_per_country(dataset=dataset4, h=0.82)
