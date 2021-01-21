@@ -235,3 +235,20 @@ class Miner:
         our_countries_life_expectancy = pd.concat([poland_life_expectancy, south_africa_life_expectancy, indonesia_life_expectancy, ukraine_life_expectancy, spain_life_expectancy])
 
         return our_countries_life_expectancy
+        
+    def get_dataframe_pies(self, df):
+        """ Creates a dataframe to make pie charts
+
+            Args: df[(dataFrame)]: dataframe with required data
+
+            Returns: Generated dataframe
+
+            Creator: @AntonioLealDev
+        """
+        country_list = list(df.index.unique())
+        dict_list = []
+        for country in country_list:
+            temp_df = df.loc[df.index==country]
+            dict_list.append({"Country":country, "AV_NewDeaths":temp_df["new_deaths"].mean(), "AV_NewCases":temp_df["new_cases"].mean()})
+
+        return pd.DataFrame(dict_list)

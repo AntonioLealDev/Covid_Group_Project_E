@@ -152,7 +152,7 @@ class Visualization:
                     y:"<b>"+ y_label +"</b>",
                     x:"<b>"+ x_label +"</b>",
                 },
-                title='<span style="font-size: 26px;"><b>'+country+'</b></span>')
+                title='<span style="font-size: 26px;"><b>'+title+'</b></span>')
 
         fig.update_layout(title={"y":0.92})
         fig.show()
@@ -176,7 +176,7 @@ class Visualization:
                     y:"<b>"+ y_label +"</b>",
                     x:"<b>"+ x_label +"</b>",
                 },
-                title='<span style="font-size: 26px;"><b>'+country+'</b></span>')
+                title='<span style="font-size: 26px;"><b>'+title+'</b></span>')
 
         fig.update_layout(title={"y":0.92})
         fig.update_traces(marker=dict(size=4))
@@ -210,3 +210,23 @@ class Visualization:
                         font=dict(color="Black"))
                         
         fig.show()
+
+    def variety_plot_wrapper(self, data):
+        """ Prepares several plots to be done.
+
+            Creator: @AntonioLealDev
+
+            Args: data[(DataFrame)]: Dataframe to be plotted
+        """
+        #Get country list
+        country_list = list(data.index.unique())
+        for i in range(len(country_list)):
+            c_df = data.loc[data.index == country_list[i]]
+            # Values for plotting
+            columns = ["new_cases_smoothed", "new_deaths_smoothed"]
+            labels = ["New cases", "New deaths"]
+            # Make plots
+            for j in range(2):
+                self.make_barplot(c_df, "date", columns[j], "Date", labels[j], country_list[i])
+                self.make_lineplot(c_df, "date", columns[j], "Date", labels[j], country_list[i])
+                self.make_scatter(c_df, "date", columns[j], "Date", labels[j], country_list[i])
