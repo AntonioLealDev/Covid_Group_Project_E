@@ -236,6 +236,8 @@ class Visualization:
             Creator: @AntonioLealDev
 
             Args: data[(DataFrame)]: Dataframe to be plotted
+
+            Returns: none
         """
         #Get country list
         country_list = list(data.index.unique())
@@ -249,3 +251,63 @@ class Visualization:
                 self.make_barplot(c_df, "date", columns[j], "Date", labels[j], country_list[i])
                 self.make_lineplot(c_df, "date", columns[j], "Date", labels[j], country_list[i])
                 self.make_scatter(c_df, "date", columns[j], "Date", labels[j], country_list[i])
+
+    def tendency_plots_wrapper(self, data, y, ylabel, yaxis):
+        """ Prepares tendency&lockdown plots to be done.
+
+            Creator: @AntonioLealDev
+
+            Args: data[(DataFrame)]: Dataframe to be plotted
+                  y[(list)]: List of the names of the columns (string) used as y-axes
+                  ylabel[(list)]: List of labels for y-axes data
+                  yaxis[(list)]: List of bools for each column ploted. True: Right y-axis, False: Otherwise
+
+            Returns: None
+        """
+        country_list = list(data.index.unique())
+        linecolors = ["red", "green"]
+        
+        lines = []
+        lines.append([[dt.datetime(2020, 3, 13), 0, 2500000], [dt.datetime(2020, 5, 4), 0, 2500000]])
+        lines.append([[dt.datetime(2020, 3, 26), 0, 2500000], [dt.datetime(2020, 5, 1), 0, 2500000]])
+        lines.append([[dt.datetime(2020, 3, 17), 0, 2500000], [dt.datetime(2020, 5, 11), 0, 2500000]])
+        lines.append([[dt.datetime(2020, 3, 26), 0, 2500000], [dt.datetime(2020, 7, 31), 0, 2500000]])
+        lines.append([[dt.datetime(2020, 3, 14), 0, 2500000], [dt.datetime(2020, 5, 11), 0, 2500000]])
+
+        for i in range(len(country_list)):
+            c_data = data.loc[data.index == country_list[i]]
+            self.tendency_and_lockdown(c_data, "date", "Date", y, ylabel, yaxis, lines[i], linecolors, country_list[i])
+
+
+    def tendency_and_lockdown(self, data, x, xlabel, y, ylabel, yaxis, lines, linecolors, title):
+        """ Generates line plots with 2 axes and several data. Adds vertical lines too. Saves to html
+
+            Creator: @AntonioLealDev
+
+            Args: data[(DataFrame)]: Dataframe to be plotted
+                  x[(str)]: Name of the column used as x-axis
+                  xlabel[(str)]: Label for x-axis data
+                  y[(list)]: List of the names of the columns (string) used as y-axes
+                  ylabel[(list)]: List of labels for y-axes data
+                  yaxis[(list)]: List of bools for each column ploted. True: Right y-axis, False: Otherwise
+                  lines[(list)]: List of data for vertical line plotting [x, y0, y1]
+                  linecolors[(list)]: List of CSS colors for vertical lines
+                  title[(str)]: Plot title
+
+            Returns: None
+        """ 
+        fig = make_subplots(specs=[[{"secondary_y":True}]])
+
+        # Add data plots
+        for i in range(len(y)):
+            fig.add_trace(go.Scatter(x=data[x], y=data[y[i]], mode="lines", name=ylabel[i]), secondary_y=yaxis[i])
+
+        # Set legend and title
+        fig.update_layout(legend=dict(orientation="h", yanchor="bottom", xanchor="center", y=-0.2, x=0.475), font=dict(color="Black"),\
+                          title={"text":'<span style="font-size: 26px;"><b>'+title+'</b></span>', "x":0.5})
+
+        # Add vertical lines
+        for i in range(len(lines)):
+            fig.add_shape(type="line", x0=lines[i][0], y0=lines[i][1], x1=lines[i][0], y1=lines[i][2], line=dict(color=linecolors[i], width=2, dash="dashdot"))
+
+        fig.show()
