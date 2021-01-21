@@ -271,3 +271,47 @@ class Miner:
             dict_list.append({"Country":country, "AV_NewDeaths":temp_df["new_deaths"].mean(), "AV_NewCases":temp_df["new_cases"].mean()})
 
         return pd.DataFrame(dict_list)
+
+
+    def groupedby_month(self,dataset):
+        """ Returns the mean and the median dataframe grouped by month
+            Args: dataset 
+            Creator: @JavierOlcoz
+        """
+        x = dataset
+        x['location'] = x.index
+        x = x.set_index(['date'])
+        df_month_mean = x.resample('BM').mean()
+        df_month_median = x.resample('BM').median()
+
+        return df_month_mean, df_month_median
+
+
+    def groupedby_10_days(self, dataset):
+        """ Returns the mean and the median dataframe grouped by 10 days
+            Args: dataset 
+            Creator: @JavierOlcoz
+        """
+        x = dataset
+        x['location'] = x.index
+        x = x.set_index(['date'])
+        df_10_days_mean = x.resample('10D').mean()
+        df_10_days_median = x.resample('10D').median()
+
+        return df_10_days_mean, df_10_days_median
+
+    
+    def groupedby_month_and_10_days(self, dataset):
+        """ Returns the mean and the median dataframe grouped by month and 10 days
+            Args: dataset 
+            Creator: @JavierOlcoz
+        """
+        x = dataset
+        x['location'] = x.index
+        x = x.set_index(['date'])
+        df_month_mean = x.resample('BM').mean()
+        df_month_median = x.resample('BM').median()
+        df_10_days_mean = x.resample('10D').mean()
+        df_10_days_median = x.resample('10D').median()
+
+        return df_month_mean, df_month_median, df_10_days_mean, df_10_days_median
