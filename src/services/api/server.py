@@ -1,20 +1,44 @@
 from flask import Flask, request, render_template
 import os
 import json
+import sys
 
 def def_camino(file_name):
     """
         @Alex
         Path definition for data folder to operate the path
-            Input   : Name of the file to create the path
+            Input: 
+                File_name   : Name of the file to create the path
+            Output:
+                camino      : Path depending the SO
+
     """
-    fileDir = os.path.dirname(os.path.realpath('__file__'))
-    camino = os.path.join(fileDir, './Covid_Group_Project_E/data/'+file_name)
-    camino = os.path.abspath(os.path.realpath(camino))
+    import os
+    import platform
+
+    fileDir = os.path.dirname('__file__')
+
+    if platform.system() == "Darwin":
+        camino = os.path.join(fileDir, './Covid_Group_Project_E/data/'+file_name)
+        camino = os.path.abspath(os.path.realpath(camino))
     
+    if platform.system() == "Windows":
+        camino = os.path.join(fileDir, '.\\data\\'+file_name)
+        camino = os.path.abspath(os.path.realpath(camino))
     return camino
 
 def read_json(fullpath):
+    """
+        @Alex
+        function that read a json file
+            Input: 
+                fullpath    : Full path of the file
+            Output:
+                json_readed : Jason readed
+
+    """
+    import json
+    
     with open(fullpath, "r") as json_file_readed:
         json_readed = json.load(json_file_readed)
     return json_readed
@@ -40,7 +64,6 @@ def group_id():
 def token_id():
     x = request.args['password'] #el password es N
     path = def_camino("json_own.json")
-    print(path)
     json_own = read_json(path)
     if x == "E107750842":
         return json_own #El contenido es "S"
@@ -50,9 +73,7 @@ def token_id():
 # ---------- Other functions ----------
 
 def main():
-    print("---------STARTING PROCESS---------")
-    print(__file__)
-    
+    print("---------STARTING PROCESS---------")   
     # Get the settings fullpath
     # \\ --> WINDOWS
     # / --> UNIX
