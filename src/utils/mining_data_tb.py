@@ -216,11 +216,11 @@ class Miner:
             Args: dataset used
             Creator: @JavierOlcoz
         """
-        poland_total_cases = self.country_position(dataset=dataset1, country='Poland',variable='total_cases',h=192)
-        south_africa_total_cases = self.country_position(dataset=dataset1,country='South Africa',variable='total_cases',h=192)
-        indonesia_total_cases = self.country_position(dataset=dataset1,country='Indonesia',variable='total_cases',h=192)
-        ukraine_total_cases = self.country_position(dataset=dataset1,country='Ukraine',variable='total_cases',h=192)
-        spain_total_cases = self.country_position(dataset=dataset1,country='Spain',variable='total_cases',h=192)
+        poland_total_cases = self.country_position(dataset=dataset1, country='Poland',variable='total_cases',h=193)
+        south_africa_total_cases = self.country_position(dataset=dataset1,country='South Africa',variable='total_cases',h=193)
+        indonesia_total_cases = self.country_position(dataset=dataset1,country='Indonesia',variable='total_cases',h=193)
+        ukraine_total_cases = self.country_position(dataset=dataset1,country='Ukraine',variable='total_cases',h=193)
+        spain_total_cases = self.country_position(dataset=dataset1,country='Spain',variable='total_cases',h=193)
         our_countries_total_cases = pd.concat([poland_total_cases, south_africa_total_cases, indonesia_total_cases, ukraine_total_cases, spain_total_cases])
 
         return our_countries_total_cases  
@@ -231,11 +231,11 @@ class Miner:
             Args: dataset used
             Creator: @JavierOlcoz
         """
-        poland_total_deaths = self.country_position(dataset=dataset1,country='Poland',variable='total_deaths',h=192)
-        south_africa_total_deaths = self.country_position(dataset=dataset1,country='South Africa',variable='total_deaths',h=192)
-        indonesia_total_deaths = self.country_position(dataset=dataset1,country='Indonesia',variable='total_deaths',h=192)
-        ukraine_total_deaths = self.country_position(dataset=dataset1,country='Ukraine',variable='total_deaths',h=192)
-        spain_total_deaths = self.country_position(dataset=dataset1,country='Spain',variable='total_deaths',h=192)
+        poland_total_deaths = self.country_position(dataset=dataset1,country='Poland',variable='total_deaths',h=193)
+        south_africa_total_deaths = self.country_position(dataset=dataset1,country='South Africa',variable='total_deaths',h=193)
+        indonesia_total_deaths = self.country_position(dataset=dataset1,country='Indonesia',variable='total_deaths',h=193)
+        ukraine_total_deaths = self.country_position(dataset=dataset1,country='Ukraine',variable='total_deaths',h=193)
+        spain_total_deaths = self.country_position(dataset=dataset1,country='Spain',variable='total_deaths',h=193)
         our_countries_total_deaths = pd.concat([poland_total_deaths, south_africa_total_deaths, indonesia_total_deaths, ukraine_total_deaths, spain_total_deaths])
 
         return our_countries_total_deaths
@@ -246,14 +246,30 @@ class Miner:
             Args: dataset used
             Creator: @JavierOlcoz
         """   
-        poland_life_expectancy = self.country_position(dataset=dataset1,country='Poland',variable='life_expectancy',h=192)
-        south_africa_life_expectancy = self.country_position(dataset=dataset1,country='South Africa',variable='life_expectancy',h=192)
-        indonesia_life_expectancy = self.country_position(dataset=dataset1,country='Indonesia',variable='life_expectancy',h=192)
-        ukraine_life_expectancy = self.country_position(dataset=dataset1,country='Ukraine',variable='life_expectancy',h=192)
-        spain_life_expectancy = self.country_position(dataset=dataset1,country='Spain',variable='life_expectancy',h=192)
+        poland_life_expectancy = self.country_position(dataset=dataset1,country='Poland',variable='life_expectancy',h=193)
+        south_africa_life_expectancy = self.country_position(dataset=dataset1,country='South Africa',variable='life_expectancy',h=193)
+        indonesia_life_expectancy = self.country_position(dataset=dataset1,country='Indonesia',variable='life_expectancy',h=193)
+        ukraine_life_expectancy = self.country_position(dataset=dataset1,country='Ukraine',variable='life_expectancy',h=193)
+        spain_life_expectancy = self.country_position(dataset=dataset1,country='Spain',variable='life_expectancy',h=193)
         our_countries_life_expectancy = pd.concat([poland_life_expectancy, south_africa_life_expectancy, indonesia_life_expectancy, ukraine_life_expectancy, spain_life_expectancy])
 
         return our_countries_life_expectancy
+
+
+    def total_recoveries(self, dataset1):
+        """ Concatenates all the dataframes
+            Args: dataset used
+            Creator: @JavierOlcoz
+        """
+        poland_total_recoveries = self.country_position(dataset=dataset1,country='Poland',variable='recovered',h=193)
+        south_africa_total_recoveries = self.country_position(dataset=dataset1,country='South Africa',variable='recovered',h=193)
+        indonesia_total_recoveries = self.country_position(dataset=dataset1,country='Indonesia',variable='recovered',h=193)
+        ukraine_total_recoveries = self.country_position(dataset=dataset1,country='Ukraine',variable='recovered',h=193)
+        spain_total_recoveries = self.country_position(dataset=dataset1,country='Spain',variable='recovered',h=193)
+        our_countries_recovered = pd.concat([poland_total_recoveries, south_africa_total_recoveries, indonesia_total_recoveries, ukraine_total_recoveries, spain_total_recoveries])
+
+        return our_countries_recovered
+
         
     def get_dataframe_pies(self, df):
         """ Creates a dataframe to make pie charts
