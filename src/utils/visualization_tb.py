@@ -87,7 +87,7 @@ class Visualization:
         return poland_matrix, south_africa_matrix, indonesia_matrix, ukraine_matrix, spain_matrix, top_poland_matrix, top_south_africa_matrix, top_indonesia_matrix, top_ukraine_matrix, top_spain_matrix
 
     def plot_tendency_1(self, x, y_series, x_label, y_label, set_labels, label_rotation, title, date, path, vlines, vline_colors = ["r"], vline = False, legend = True):
-        """ Make a lineplot of one or several series. Vertical lines can be added.
+        """ Make a lineplot of one or several series. Vertical lines can be added. Saves it to html and jpg
             Saves the plot to file. Made by @AntonioLealDev
 
             Args: x [(pd.Series)]: Series for x axis
@@ -129,7 +129,7 @@ class Visualization:
         plot.savefig(path, dpi=plot.dpi)
 
     def make_barplot(self, data, x, y, x_label, y_label, title):
-        """ Makes plotly barplot and saves it.
+        """ Makes plotly barplot and saves it. Saves it to html and jpg
 
             Creator: @AntonioLealDev
 
@@ -153,7 +153,7 @@ class Visualization:
         fig.show()
 
     def make_lineplot(self, data, x, y, x_label, y_label, title):
-        """ Makes plotly lineplot and saves it.
+        """ Makes plotly lineplot and saves it. Saves it to html and jpg
 
             Creator: @AntonioLealDev
 
@@ -177,7 +177,7 @@ class Visualization:
         fig.show()
 
     def make_scatter(self, data, x, y, x_label, y_label, title):
-        """ Makes plotly scatter plot and saves it to html
+        """ Makes plotly scatter plot and saves it to html and jpg
 
             Creator: @AntonioLealDev
 
@@ -202,7 +202,7 @@ class Visualization:
         fig.show()
 
     def make_pies(self, data, p1_label, p2_label, p1_values, p2_values, colors, p1_title, p2_title):
-        """ Make double pie plot. Saves it to html
+        """ Make double pie plot. Saves it to html and jpg
 
             Creator: @AntonioLealDev
 
@@ -231,7 +231,7 @@ class Visualization:
         fig.show()
 
     def variety_plot_wrapper(self, data):
-        """ Prepares several plots to be done.
+        """ Prepares several plots to be done. Saves to html and jpg.
 
             Creator: @AntonioLealDev
 
@@ -253,7 +253,7 @@ class Visualization:
                 self.make_scatter(c_df, "date", columns[j], "Date", labels[j], country_list[i])
 
     def tendency_plots_wrapper(self, data, y, ylabel, yaxis):
-        """ Prepares tendency&lockdown plots to be done.
+        """ Prepares tendency&lockdown plots to be done. Saves to html and jpg.
 
             Creator: @AntonioLealDev
 
@@ -269,9 +269,9 @@ class Visualization:
         
         lines = []
         lines.append([[dt.datetime(2020, 3, 13), 0, 2500000], [dt.datetime(2020, 5, 4), 0, 2500000]])
-        lines.append([[dt.datetime(2020, 3, 26), 0, 2500000], [dt.datetime(2020, 5, 1), 0, 2500000]])
-        lines.append([[dt.datetime(2020, 3, 17), 0, 2500000], [dt.datetime(2020, 5, 11), 0, 2500000]])
-        lines.append([[dt.datetime(2020, 3, 26), 0, 2500000], [dt.datetime(2020, 7, 31), 0, 2500000]])
+        lines.append([[dt.datetime(2020, 3, 26), 0, 1400000], [dt.datetime(2020, 5, 1), 0, 1400000]])
+        lines.append([[dt.datetime(2020, 3, 17), 0, 1250000], [dt.datetime(2020, 5, 11), 0, 1250000]])
+        lines.append([[dt.datetime(2020, 3, 26), 0, 1000000], [dt.datetime(2020, 7, 31), 0, 1000000]])
         lines.append([[dt.datetime(2020, 3, 14), 0, 2500000], [dt.datetime(2020, 5, 11), 0, 2500000]])
 
         for i in range(len(country_list)):
@@ -280,7 +280,7 @@ class Visualization:
 
 
     def tendency_and_lockdown(self, data, x, xlabel, y, ylabel, yaxis, lines, linecolors, title):
-        """ Generates line plots with 2 axes and several data. Adds vertical lines too. Saves to html
+        """ Generates line plots with 2 axes and several data. Adds vertical lines too. Saves to html and jpg
 
             Creator: @AntonioLealDev
 
@@ -311,3 +311,35 @@ class Visualization:
             fig.add_shape(type="line", x0=lines[i][0], y0=lines[i][1], x1=lines[i][0], y1=lines[i][2], line=dict(color=linecolors[i], width=2, dash="dashdot"))
 
         fig.show()
+
+    
+    def new_deaths_plot(self, data, lines):
+        """ Generates line plot with several vertical lines. Saves to html and jpg
+
+            Creator: @AntonioLealDev
+
+            Args: data[(DataFrame)]: Dataframe to be plotted
+                  lines[(list)]: list with x values (dates) for vertical line plot
+                  y[(list)]: List of the names of the columns (string) used as y-axes
+
+            Returns: None
+        """
+        # Get country list
+        country_list = list(data.index.unique())
+
+        # Make plot for every country
+        for i in range(len(country_list)):  
+            c_data = data.loc[data.index == country_list[i]]
+            fig = px.line(c_data, x="date", y="new_deaths_smoothed", template="seaborn",\
+                    labels={
+                        "date":"<b>New daily deaths</b>",
+                        "new_deaths_smoothed":"<b>Date</b>",
+                    },
+                    title='<span style="font-size: 26px;"><b>'+country_list[i]+'</b></span>')
+
+            for j in range(len(lines[i])):
+                colors = ["red" if i%2==0 else "green" for i in range(len(lines[i]))]
+                fig.add_shape(type="line", x0=lines[i][j], y0=0, x1=lines[i][j], y1=c_data["new_deaths_smoothed"].max(), \
+                              line=dict(color=colors[j], width=2, dash="dashdot"))
+
+            fig.show()
