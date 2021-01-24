@@ -331,3 +331,172 @@ class Miner:
         df_10_days_median = x.resample('10D').median()
 
         return df_month_mean, df_month_median, df_10_days_mean, df_10_days_median
+
+    def list_extractor(self,df, col):
+        """
+        @Alex
+        Function that will extract a list with the items in a column given in the argument, without repited values
+            Input:
+                df      : Dataframe with the data
+                col     : Column of interest
+            Output:
+                l_col   : List with the unique references of the desired column
+        """
+        l_col = df[col].tolist()
+        l_col = list(dict.fromkeys(l_col))
+
+        return l_col
+
+    def compare_list_and_keep_value(self,complete, dat_complete, filt):
+        """
+        @Alex
+        Function that checkes two list and accumulates the values of the original one for the result of the filted one
+        """
+        
+        if len(dat_complete) > len(filt):
+            dat_filt=[0.]*len(filt)
+            j = 0
+            for i in range(len(complete)-1):
+                try:
+                    if complete[i] in filt:
+                        dat_filt[j] = dat_complete[i]
+                        j += 1
+                    else:
+                        pass
+                        #dat_filt[j] = dat_complete[i]
+                except:
+                    print("ERROR:",i," ",dat_complete[i])
+        else:
+            dat_filt = [0.] + dat_complete
+
+        return dat_filt
+
+    def sort_and_merge_recovered(self,df_required_countries,recovered):
+        """
+        @Alex
+        Function that gets new data of recovered data from a diferent source of covid generic data.
+            Input:
+                df_required_countries : Dataframe with the covid data 
+                recovered             : Dataframe with recovered data
+            Output:
+                total                 : Dataframe with the infomation of recovered merged in the appropiate format to df_required_countries
+        """
+
+        import os
+        import datetime
+        
+        #List with the original locations
+        location = self.list_extractor(df_required_countries,"location")
+
+        #dictionary with dates per conuntry of original frame
+        dic_required_countries = {pais:df_required_countries[df_required_countries["location"]==pais]["date"].values.tolist() for pais in location} 
+
+        # In here I got the countries that appears in the recovered df
+        recovered_group = recovered.groupby("Country_EN").sum()
+
+        # delete the index to work with Country_EN
+        recovered_country = recovered_group.reset_index()
+
+        # List of the Countries in Country_EN
+        countries_rec = self.list_extractor(recovered_country,"Country_EN")
+
+        # Countries from countries_rec that NOT appear in location
+        dif_countries = [pais for pais in countries_rec if pais not in location]
+
+        # Extract the DF with the countries of interest
+        recovered_country = recovered_country[~recovered_country["Country_EN"].isin(dif_countries)]
+
+        # list of final countries
+        final_countries_rec = [pais for pais in countries_rec if pais not in dif_countries]
+
+        # future dictionary with the values
+        dic_values_date_filt={}
+
+        # list of conflict countries
+        conflict = []
+
+        origin_date_rec = datetime.datetime.strptime("2020-01-23", '%Y-%m-%d').date()
+        today = datetime.date.today()
+        today = today.strftime('%Y-%m-%d')
+        complete = [d.strftime('%Y-%m-%d') for d in pd.date_range("2020-01-23",today)]
+
+
+        # for each country in location...
+        for pais in location:
+        #... we check if it's in the list of available data and...
+            # ... if it's in there, we extract the data from the begining of data (23-Jan-2020)
+            if pais in final_countries_rec: 
+                aux = recovered_country.loc[recovered_country["Country_EN"] == pais].values.tolist() 
+                clean = aux[0][1:]
+
+            #... if it's not there, we fullfill with NaN values
+            else:
+                aux = [np.nan]*len(dic_required_countries[pais])
+                clean = aux
+                conflict.append(pais)
+
+            # finally, we fill with the information for country
+            dic_values_date_filt [pais] = clean
+            
+        #  for each country in location we...
+        for pais in location:
+            # ...first avoid the conflictive data
+            if pais not in conflict:
+                # ... get the date of origin from required countries and transform it to date format
+                pais_date = datetime.datetime.strptime(dic_required_countries[pais][0], '%Y-%m-%d').date()
+                        
+                # ...if the 'pais_date' is older than 'origin_date_rec', we add the difference in value to  
+                if pais_date < origin_date_rec:
+                    dic_values_date_filt[pais] = [0.]*(abs((pais_date-origin_date_rec).days)) + dic_values_date_filt[pais]
+
+                # ... if the 'origin_date_rec' is older than 'pais_date', we substract as many data as needed
+                elif pais_date > origin_date_rec:           
+                    dic_values_date_filt[pais] = self.compare_list_and_keep_value(complete, dic_values_date_filt[pais], dic_required_countries[pais])
+
+        # We finally build the dict from where we'll create the DF
+        loc = []
+        rec = []
+        dates = []
+        for pais in location:
+            rec = rec + dic_values_date_filt[pais]
+            loc = loc + [pais]*len(dic_values_date_filt[pais])
+            dates = dates + dic_required_countries[pais]
+
+        final = {"location":loc,"date":dates,"recovered":rec}
+
+        # Creation of the Dataframe
+        result = pd.DataFrame(final)
+
+        # Reindex for merging purposes
+        df1 = df_required_countries.set_index(["location","date"])
+        df2 = result.set_index(["location","date"])
+
+        # Merge of both df
+        total = pd.concat([df1,df2], axis=1, join="inner")
+
+        # Final result
+        return total
+    
+    def json_creator(self,df_to_convert):
+        """
+        @Alex
+        Function that will create and save the json required by the server
+            Input:
+                df_to_convert   : Dataframe with the data to convert
+        
+        """
+        import json
+        import os
+        
+        # Group by required data
+        n_v_averages = df_to_convert.groupby("date").agg({"new_vaccinations":"mean"})
+        n_v_averages = n_v_averages.reset_index()
+        n_v_averages = n_v_averages.values.tolist()
+
+        # Creation of the json
+        json_own = {"n_v_averages":n_v_averages}
+
+        # Saving the file
+        camino = ".." + os.sep + "reports" + os.sep + "json_own.json"
+        with open(camino,'w') as json_file:
+            json.dump(json_own,json_file)

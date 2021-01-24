@@ -1,6 +1,6 @@
 {
     "server_running": true,
-    "port": 6060,
+    "port": 5000,
     "debug": true,
-    "host": "192.168.1.128"
+    "host": "192.168.0.21"
 }

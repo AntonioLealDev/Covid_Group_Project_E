@@ -10,6 +10,54 @@ import requests
 
 class Apis:
 
+    def checker(self, url_complete):
+        """
+        @Alex
+        Function that helps us to make the call to the server to recieve the appropiate data:
+            Inputs:
+                url_complete    : url to check
+
+            Output:
+                r               : response of the call, if the request, have succeded, it returns "True", if found an error, returns "False"
+        
+        """
+    
+        try:
+            r = requests.get(url=url_complete)
+            r.raise_for_status()  # Raises a HTTPError if the status is 4xx, 5xxx, or timeout
+        
+        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout, requests.exceptions.HTTPError):
+            return False
+        else:
+            return True
+
+    def conection_error(self):
+        """
+        @Alex
+        Function that checks the so and return the last json given data:
+            Output:
+                resp_json        : Json file with the information requested
+        
+        """
+
+        import os
+        import platform
+        
+        print("error in the response, proceed to open the newest copy of the file given")
+
+        if platform.system() == "Darwin":
+            camino = os.path.join('../data/jsonpaalexjaviyantonio.json')
+            camino = os.path.abspath(os.path.realpath(camino))
+        
+        if platform.system() == "Windows":
+            camino = os.path.join('..\\data\\jsonpaalexjaviyantonio.json')
+            camino = os.path.abspath(os.path.realpath(camino))
+
+        with open(camino, 'r+') as outfile:
+            resp_json = json.load(outfile)
+        
+        return resp_json
+
     def requester (self, url_b, url_add, psw ):
         """
         @Alex
@@ -23,7 +71,19 @@ class Apis:
                 resp_json        : Json file with the information requested
         
         """
-        token = requests.get(url=url_b+url_add["group_id"]+psw["group_id"])
-        token = token.json()
-        resp_json = requests.get(url=url_b+url_add["token"]+token["token"])
-        return resp_json.json()
+        url_complete = url_b+url_add["group_id"]+psw["group_id"]
+        token = self.checker(url_complete)
+        if token == True:
+            token = requests.get(url=url_complete)
+            token = token.json()
+            url_complete = url_b+url_add["token"]+token["token"]
+            resp_json = self.checker(url_complete)
+            if resp_json == True:
+                resp_json = requests.get(url=url_complete)
+                resp_json = resp_json.json()
+            else:
+                resp_json = self.conection_error()
+        else:
+            resp_json = self.conection_error()
+        
+        return resp_json

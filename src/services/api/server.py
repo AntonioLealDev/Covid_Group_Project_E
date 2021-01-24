@@ -16,15 +16,14 @@ def def_camino(file_name):
     import os
     import platform
 
-    fileDir = os.path.dirname('__file__')
-
     if platform.system() == "Darwin":
-        camino = os.path.join(fileDir, './Covid_Group_Project_E/data/'+file_name)
+        camino = os.path.join('./Python_code_own/Covid_Group_Project_E/reports/'+file_name)
         camino = os.path.abspath(os.path.realpath(camino))
     
     if platform.system() == "Windows":
-        camino = os.path.join(fileDir, '.\\data\\'+file_name)
+        camino = os.path.join('.\\data\\'+file_name)
         camino = os.path.abspath(os.path.realpath(camino))
+
     return camino
 
 def read_json(fullpath):
