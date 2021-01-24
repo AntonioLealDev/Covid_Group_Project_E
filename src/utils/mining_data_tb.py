@@ -461,19 +461,24 @@ class Miner:
             rec = rec + dic_values_date_filt[pais]
             loc = loc + [pais]*len(dic_values_date_filt[pais])
             dates = dates + dic_required_countries[pais]
+        
 
-        final = {"location":loc,"date":dates,"recovered":rec}
+        #final = {"location":loc,"date":dates,"recovered":rec}
+        final = {"recovered":rec}
 
         # Creation of the Dataframe
         result = pd.DataFrame(final)
 
         # Reindex for merging purposes
-        df1 = df_required_countries.set_index(["location","date"])
-        df2 = result.set_index(["location","date"])
+        # df1 = df_required_countries.set_index(["location","date"])
+        # df2 = result.set_index(["location","date"])
 
+        df1 = df_required_countries
+        df2 = result
+        
         # Merge of both df
         total = pd.concat([df1,df2], axis=1, join="inner")
-
+        
         # Final result
         return total
     
@@ -497,6 +502,36 @@ class Miner:
         json_own = {"n_v_averages":n_v_averages}
 
         # Saving the file
-        camino = ".." + os.sep + "reports" + os.sep + "json_own.json"
-        with open(camino,'w') as json_file:
+        import os
+
+        path = os.path.abspath(os.path.join(".." + os.sep + "reports"  + os.sep + "json_own.json"))
+
+        with open(path,'w') as json_file:
             json.dump(json_own,json_file)
+
+    def json_prep_plot(self, d_json):
+        """
+        @Alex
+        Function that will prepare the json to be represented
+            Input:
+                d_json  : json with the data
+
+            Output:
+                df_json : dataframe with the information sorted
+
+        """
+        # representing the json file
+        df_json = pd.DataFrame(d_json)
+
+        dates = []
+        means = []
+
+        for i in df_json['t_d_averages']:
+            dates.append(i[0])
+            means.append(i[1])
+
+        df_json['Date'] = dates
+        df_json['Total Deaths Mean'] = means
+        df_json = df_json.drop(['t_d_averages'], axis=1)
+
+        return df_json

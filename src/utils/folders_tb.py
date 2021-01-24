@@ -12,3 +12,4 @@ class Folders:
         variable = self.pd.read_csv(url)
 
         return variable
+    

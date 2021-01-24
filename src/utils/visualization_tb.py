@@ -12,6 +12,22 @@ from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 
 class Visualization:
+    def path_saver(self,cat,file_name):
+        """
+        @Alex
+        Path creator to save the files in the appropiate format.
+            Input:
+                cat         : Cathegory of folder to be save 
+                file_name   : Name of the file
+            
+            Output:
+                path        : Path merged 
+        """
+        import os
+
+        path = os.path.abspath(os.path.join(".." + os.sep + "plots" + os.sep + cat + os.sep + file_name))
+        
+        return path
         
     def plot_tendency(self, x, y_series, x_label, y_label, set_labels, label_rotation, title, date, path, vlines, vline_colors, vline = False, legend = True):
         """ Make a lineplot of one or several series. Vertical lines can be added.
@@ -132,6 +148,7 @@ class Visualization:
         """ Makes plotly barplot and saves it. Saves it to html and jpg
 
             Creator: @AntonioLealDev
+            Reviewer: @Alex
 
             Args: data[(DataFrame)]: Dataframe to be plotted
                   x[(string)]: Name of the column to be used as x axis
@@ -142,6 +159,7 @@ class Visualization:
 
             Returns: none
         """
+       
         fig = px.bar(data, x=x, y=y, template="seaborn",\
                 labels={
                     y:"<b>"+ y_label +"</b>",
@@ -149,15 +167,20 @@ class Visualization:
                 },
                 title='<span style="font-size: 26px;"><b>'+title+'</b></span>')
 
-        fig.update_layout(title={"y":0.92})
-        fig.write_image("..\\resources\\plots\\static\\barplot_" + y + "_" + title + ".png")
-        fig.write_html("..\\resources\\plots\\html\\barplot_" + y + "_" + title + ".html")
+        fig.update_layout(title={"y":0.92}) 
+
+        path_static = self.path_saver("static","barplot_")
+        path_html = self.path_saver("html","barplot_")       
+
+        fig.write_image(path_static + y + "_" + title + ".png")
+        fig.write_html(path_html + y + "_" + title + ".html")
         #fig.show()
 
     def make_lineplot(self, data, x, y, x_label, y_label, title):
         """ Makes plotly lineplot and saves it. Saves it to html and jpg
 
             Creator: @AntonioLealDev
+            Reviewer: @Alex
 
             Args: data[(DataFrame)]: Dataframe to be plotted
                   x[(string)]: Name of the column to be used as x axis
@@ -168,6 +191,7 @@ class Visualization:
 
             Returns: none
         """
+        
         fig = px.line(data, x=x, y=y, template="seaborn",\
                 labels={
                     y:"<b>"+ y_label +"</b>",
@@ -176,14 +200,19 @@ class Visualization:
                 title='<span style="font-size: 26px;"><b>'+title+'</b></span>')
 
         fig.update_layout(title={"y":0.92})
-        fig.write_image("..\\resources\\plots\\static\\lineplot_" + y + "_" + title + ".png")
-        fig.write_html("..\\resources\\plots\\html\\lineplot_" + y + "_" + title + ".html")
+
+        path_static = self.path_saver("static","lineplot_")
+        path_html = self.path_saver("html","lineplot_")
+
+        fig.write_image(path_static + y + "_" + title + ".png")
+        fig.write_html(path_html + y + "_" + title + ".html")
         #fig.show()
 
     def make_scatter(self, data, x, y, x_label, y_label, title):
         """ Makes plotly scatter plot and saves it to html and jpg
 
             Creator: @AntonioLealDev
+            Reviewer: @Alex
 
             Args: data[(DataFrame)]: Dataframe to be plotted
                   x[(string)]: Name of the column to be used as x axis
@@ -203,14 +232,19 @@ class Visualization:
 
         fig.update_layout(title={"y":0.92})
         fig.update_traces(marker=dict(size=4))
-        fig.write_image("..\\resources\\plots\\static\\scatterplot_" + y + "_" + title + ".png")
-        fig.write_html("..\\resources\\plots\\html\\scatterplot_" + y + "_" + title + ".html")
+
+        path_static = self.path_saver("static","scatterplot_")
+        path_html = self.path_saver("html","scatterplot_")
+
+        fig.write_image(path_static + y + "_" + title + ".png")
+        fig.write_html(path_html + y + "_" + title + ".html")
         #fig.show()
 
     def make_pies(self, data, p1_label, p2_label, p1_values, p2_values, colors, p1_title, p2_title):
         """ Make double pie plot. Saves it to html and jpg
 
             Creator: @AntonioLealDev
+            Reviewer: @Alex
 
             Args: data[(DataFrame)]: Dataframe to be plotted
                   p1_label[(str)]: Name of the column containing pie 1 labels
@@ -234,8 +268,11 @@ class Visualization:
         fig.update_layout(legend=dict(orientation="h", yanchor="bottom", xanchor="center", y=-0.1, x=0.5),
                         font=dict(color="Black"))
         
-        fig.write_image("..\\resources\\plots\\static\\pieplot.png")
-        fig.write_html("..\\resources\\plots\\html\\pieplot.html")            
+        path_static = self.path_saver("static","pieplot.png")
+        path_html = self.path_saver("html","pieplot.png")
+
+        fig.write_image(path_html)
+        fig.write_html(path_static)            
         #fig.show()
 
     def variety_plot_wrapper(self, data):
@@ -291,6 +328,7 @@ class Visualization:
         """ Generates line plots with 2 axes and several data. Adds vertical lines too. Saves to html and jpg
 
             Creator: @AntonioLealDev
+            Reviewer: @Alex
 
             Args: data[(DataFrame)]: Dataframe to be plotted
                   x[(str)]: Name of the column used as x-axis
@@ -318,8 +356,12 @@ class Visualization:
         for i in range(len(lines)):
             fig.add_shape(type="line", x0=lines[i][0], y0=lines[i][1], x1=lines[i][0], y1=lines[i][2], line=dict(color=linecolors[i], width=2, dash="dashdot"))
 
-        fig.write_image("..\\resources\\plots\\static\\lockdowns" + title + ".png")
-        fig.write_html("..\\resources\\plots\\html\\lockdowns" + title + ".html")
+        path_static = self.path_saver("static","lockdowns")
+        path_html = self.path_saver("html","lockdowns")
+
+        fig.write_html(path_html + title + ".html")
+        fig.write_image(path_static + title + ".png")
+        
         #fig.show()
 
     
@@ -327,6 +369,7 @@ class Visualization:
         """ Generates line plot with several vertical lines. Saves to html and jpg
 
             Creator: @AntonioLealDev
+            Reviewer: @Alex
 
             Args: data[(DataFrame)]: Dataframe to be plotted
                   lines[(list)]: list with x values (dates) for vertical line plot
@@ -352,5 +395,8 @@ class Visualization:
                 fig.add_shape(type="line", x0=lines[i][j], y0=0, x1=lines[i][j], y1=c_data["new_deaths_smoothed"].max(), \
                               line=dict(color=colors[j], width=2, dash="dashdot"))
 
-            fig.write_image("..\\resources\\plots\\static\\death_tendency" + country_list[i] + ".png")
-            fig.write_html("..\\resources\\plots\\html\\death_tendency" + country_list[i] + ".html")
+            path_static = self.path_saver("static","death_tendency")
+            path_html = self.path_saver("html","death_tendency")
+
+            fig.write_image(path_static + country_list[i] + ".png")
+            fig.write_html(path_html + country_list[i] + ".html")
