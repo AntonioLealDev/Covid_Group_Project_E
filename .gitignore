@@ -1,4 +1,6 @@
-# jpg files
+# png, html and jpg files
+**/*.html
+**/*.png
 **/*.jpg
 
 # Countries Folder

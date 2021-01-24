@@ -150,7 +150,9 @@ class Visualization:
                 title='<span style="font-size: 26px;"><b>'+title+'</b></span>')
 
         fig.update_layout(title={"y":0.92})
-        fig.show()
+        fig.write_image("..\\resources\\plots\\static\\barplot_" + y + "_" + title + ".png")
+        fig.write_html("..\\resources\\plots\\html\\barplot_" + y + "_" + title + ".html")
+        #fig.show()
 
     def make_lineplot(self, data, x, y, x_label, y_label, title):
         """ Makes plotly lineplot and saves it. Saves it to html and jpg
@@ -174,7 +176,9 @@ class Visualization:
                 title='<span style="font-size: 26px;"><b>'+title+'</b></span>')
 
         fig.update_layout(title={"y":0.92})
-        fig.show()
+        fig.write_image("..\\resources\\plots\\static\\lineplot_" + y + "_" + title + ".png")
+        fig.write_html("..\\resources\\plots\\html\\lineplot_" + y + "_" + title + ".html")
+        #fig.show()
 
     def make_scatter(self, data, x, y, x_label, y_label, title):
         """ Makes plotly scatter plot and saves it to html and jpg
@@ -199,7 +203,9 @@ class Visualization:
 
         fig.update_layout(title={"y":0.92})
         fig.update_traces(marker=dict(size=4))
-        fig.show()
+        fig.write_image("..\\resources\\plots\\static\\scatterplot_" + y + "_" + title + ".png")
+        fig.write_html("..\\resources\\plots\\html\\scatterplot_" + y + "_" + title + ".html")
+        #fig.show()
 
     def make_pies(self, data, p1_label, p2_label, p1_values, p2_values, colors, p1_title, p2_title):
         """ Make double pie plot. Saves it to html and jpg
@@ -227,8 +233,10 @@ class Visualization:
                         marker=dict(colors=colors, line=dict(color='#000000', width=0.5)))
         fig.update_layout(legend=dict(orientation="h", yanchor="bottom", xanchor="center", y=-0.1, x=0.5),
                         font=dict(color="Black"))
-                        
-        fig.show()
+        
+        fig.write_image("..\\resources\\plots\\static\\pieplot.png")
+        fig.write_html("..\\resources\\plots\\html\\pieplot.html")            
+        #fig.show()
 
     def variety_plot_wrapper(self, data):
         """ Prepares several plots to be done. Saves to html and jpg.
@@ -310,7 +318,9 @@ class Visualization:
         for i in range(len(lines)):
             fig.add_shape(type="line", x0=lines[i][0], y0=lines[i][1], x1=lines[i][0], y1=lines[i][2], line=dict(color=linecolors[i], width=2, dash="dashdot"))
 
-        fig.show()
+        fig.write_image("..\\resources\\plots\\static\\lockdowns" + title + ".png")
+        fig.write_html("..\\resources\\plots\\html\\lockdowns" + title + ".html")
+        #fig.show()
 
     
     def new_deaths_plot(self, data, lines):
@@ -342,4 +352,5 @@ class Visualization:
                 fig.add_shape(type="line", x0=lines[i][j], y0=0, x1=lines[i][j], y1=c_data["new_deaths_smoothed"].max(), \
                               line=dict(color=colors[j], width=2, dash="dashdot"))
 
-            fig.show()
+            fig.write_image("..\\resources\\plots\\static\\death_tendency" + country_list[i] + ".png")
+            fig.write_html("..\\resources\\plots\\html\\death_tendency" + country_list[i] + ".html")
