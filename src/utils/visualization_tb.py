@@ -72,8 +72,8 @@ class Visualization:
 
         # Save plot to file
         plot.savefig(path, dpi=plot.dpi)
-
-
+        
+    
     def correlation_matrix(self, matrix, title_1):
         """ Plot the correlation matrix
             Args: correlation matrix, title
@@ -81,6 +81,9 @@ class Visualization:
         """
         plt.title(title_1)
         sns.heatmap(matrix, cmap="BrBG", annot=True)
+        path_matrix = self.path_saver("correlation matrix", title_1)
+        plt.savefig(path_matrix + '.jpg', bbox_inches='tight')
+        
         return plt.show()
 
     def all_matrix_visualization(self, dataset1, dataset2, dataset3, dataset4, dataset5, dataset6, dataset7, dataset8, dataset9, dataset10):
