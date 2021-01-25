@@ -400,3 +400,26 @@ class Visualization:
 
             fig.write_image(path_static + country_list[i] + ".png")
             fig.write_html(path_html + country_list[i] + ".html")
+
+    def plot_resampled_evolution(self, data, data10, dataM, country):
+        """
+        """
+        #Create Figure
+        fig = go.Figure()
+
+        #Add traces
+        fig.add_trace(go.Scatter(x=data["date"], y=data["new_cases_smoothed"], mode="lines", name="Daily"))
+        fig.add_trace(go.Scatter(x=data10.index, y=data10["new_cases_smoothed"], mode="markers+lines", name="10 Days"))
+        fig.add_trace(go.Scatter(x=dataM.index, y=dataM["new_cases_smoothed"], mode="markers+lines", name="Monthly"))
+
+        #Set Layout
+        fig.update_layout(title={"text":'<span style="font-size: 26px;"><b>Evolution of new cases ('+country+')</b></span>', "x":0.5}, \
+                                 xaxis_title="Date", yaxis_title="New cases")
+        
+        path_static = self.path_saver("static","death_tendency")
+        path_html = self.path_saver("html","death_tendency")
+
+        fig.write_image(path_static + country + ".png")
+        fig.write_html(path_html + country + ".html")
+
+        #fig.show()
