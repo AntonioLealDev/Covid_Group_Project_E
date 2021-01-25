@@ -25,7 +25,8 @@ class Visualization:
         """
         import os
 
-        path = os.path.abspath(os.path.join(".." + os.sep + "resources" + os.sep + "plots" + os.sep + cat + os.sep + file_name))
+
+        path =  os.path.dirname(os.path.dirname(os.path.dirname( __file__ ))) + os.sep + "resources" + os.sep + "plots" + os.sep + cat + os.sep + file_name
         
         return path
         

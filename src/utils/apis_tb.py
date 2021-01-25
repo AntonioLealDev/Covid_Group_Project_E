@@ -39,19 +39,11 @@ class Apis:
                 resp_json        : Json file with the information requested
         
         """
-
-        import os
-        import platform
-        
         print("error in the response, proceed to open the newest copy of the file given")
 
-        if platform.system() == "Darwin":
-            camino = os.path.join('../data/jsonpaalexjaviyantonio.json')
-            camino = os.path.abspath(os.path.realpath(camino))
-        
-        if platform.system() == "Windows":
-            camino = os.path.join('..\\data\\jsonpaalexjaviyantonio.json')
-            camino = os.path.abspath(os.path.realpath(camino))
+        import os
+        path = os.path.dirname(os.path.dirname(os.path.dirname( __file__ )))
+        camino = path + os.sep + "data" + os.sep + "jsonpaalexjaviyantonio.json"
 
         with open(camino, 'r+') as outfile:
             resp_json = json.load(outfile)

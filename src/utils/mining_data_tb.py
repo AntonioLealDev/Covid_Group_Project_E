@@ -504,7 +504,7 @@ class Miner:
         # Saving the file
         import os
 
-        path = os.path.abspath(os.path.join(".." + os.sep + "reports"  + os.sep + "json_own.json"))
+        path =  os.path.dirname(os.path.dirname(os.path.dirname( __file__ ))) + os.sep + "reports"  + os.sep + "json_own.json"
 
         with open(path,'w') as json_file:
             json.dump(json_own,json_file)

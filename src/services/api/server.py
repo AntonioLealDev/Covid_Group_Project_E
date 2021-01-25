@@ -14,15 +14,9 @@ def def_camino(file_name):
 
     """
     import os
-    import platform
-
-    if platform.system() == "Darwin":
-        camino = os.path.join('./Python_code_own/Covid_Group_Project_E/reports/'+file_name)
-        camino = os.path.abspath(os.path.realpath(camino))
     
-    if platform.system() == "Windows":
-        camino = os.path.join('.\\data\\'+file_name)
-        camino = os.path.abspath(os.path.realpath(camino))
+    path = os.path.dirname(os.path.dirname(os.path.dirname( __file__ )))
+    camino = path + os.sep + "reports" + os.sep + "json_own.json"
 
     return camino
 

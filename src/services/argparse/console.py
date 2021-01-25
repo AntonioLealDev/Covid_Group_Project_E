@@ -32,7 +32,7 @@ print("####################\n")
 code = args["j"]
 
 if code == 18:
-    fileDir = os.path.abspath(os.path.join(os.path.dirname(__file__) + os.sep + ".." + os.sep + ".." + os.sep + ".." + os.sep + "reports" + os.sep + "json_own.json"))
+    fileDir =  os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname( __file__ )))) + os.sep + "reports"  + os.sep + "json_own.json"
     json_own = read_json(fileDir)
     print(json_own)
 else:
