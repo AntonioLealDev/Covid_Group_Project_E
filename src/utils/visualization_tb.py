@@ -269,10 +269,10 @@ class Visualization:
                         font=dict(color="Black"))
         
         path_static = self.path_saver("static","pieplot.png")
-        path_html = self.path_saver("html","pieplot.png")
+        path_html = self.path_saver("html","pieplot.html")
 
-        fig.write_image(path_html)
-        fig.write_html(path_static)            
+        fig.write_image(path_static)
+        fig.write_html(path_html)            
         #fig.show()
 
     def variety_plot_wrapper(self, data):
