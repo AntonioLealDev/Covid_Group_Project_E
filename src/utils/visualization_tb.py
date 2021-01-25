@@ -1,6 +1,6 @@
 # visualization_tb.py 
 # Created by: Antonio J. Leal
-# Last review: 19/01/2021, by Javier Olcoz
+# Last review: 25/01/2021, by Antonio Leal
 
 # Import libraries
 import matplotlib.pyplot as plt
@@ -402,7 +402,16 @@ class Visualization:
             fig.write_html(path_html + country_list[i] + ".html")
 
     def plot_resampled_evolution(self, data, data10, dataM, country):
-        """
+        """ Creates a plot with the evolution of new cases with data grouped by day, 10 days and months
+
+            Creator: @AntonioLealDev
+
+            Args: data[(DataFrame)]: Dataframe to be plotted (grouped daily)
+                  data10[(DataFrame)]: Dataframe to be plotted (grouped by 10 days)
+                  dataM[(DataFrame)]: Dataframe to be plotted (grouped by month)
+                  country[(str)]: Name of the country
+
+            Returns: None
         """
         #Create Figure
         fig = go.Figure()
